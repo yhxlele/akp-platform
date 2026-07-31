@@ -12,6 +12,7 @@
 #   - `platform-team` is a placeholder team name; swap in your real one.
 
 /bootstrap/          @example-org/platform-team
+/kargo-shared/       @example-org/platform-team
 /apps/*/argocd/      @example-org/platform-team
 /apps/*/kargo/       @example-org/platform-team
 /.github/            @example-org/platform-team

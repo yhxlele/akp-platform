@@ -42,3 +42,22 @@ spec:
     config:
       apps:
       - name: guestbook-kustomize-${{ ctx.stage }}
+  # --- Custom promotion steps (see /kargo-shared) -------------------------
+  # A CustomPromotionStep runs a container of your choosing mid-promotion —
+  # for a migration, a policy check, a notification. Uncomment to run the two
+  # examples on every promotion of this app. `as:` names the step so later
+  # steps can read its outputs. Requires the ee.kargo.akuity.io API group;
+  # see kargo-shared/README.md.
+  #
+  # - uses: hello-world
+  #   as: greet
+  #   config:
+  #     message: "promoted ${{ imageFrom(vars.image).Tag }} to ${{ ctx.stage }}"
+  # - uses: random-number
+  #   as: rng
+  #   config:
+  #     range: 100
+  # - uses: hello-world
+  #   as: report
+  #   config:
+  #     message: "rng said ${{ outputs.rng.result }}"

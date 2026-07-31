@@ -1,0 +1,32 @@
+# Syncs kargo-shared/ — CustomPromotionSteps usable from every Kargo Project —
+# to the Kargo control plane (the Argo CD cluster named `kargo`).
+#
+# A plain Application, not an ApplicationSet: this is one fixed directory, so
+# there is nothing to fan out over. `directory.recurse: true` picks up any
+# subfolders you add later.
+#
+# No destination namespace and no CreateNamespace: CustomPromotionSteps are
+# cluster-scoped, unlike the namespaced Kargo resources in apps/*/kargo/.
+#
+# Requires the ee.kargo.akuity.io API group (Akuity-hosted Kargo). Without it
+# this app reports `no matches for kind CustomPromotionStep` and nothing else
+# is affected — see kargo-shared/README.md.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kargo-shared
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/example-org/akp-platform.git
+    targetRevision: HEAD
+    path: kargo-shared
+    directory:
+      recurse: true
+  destination:
+    name: kargo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

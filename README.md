@@ -127,6 +127,11 @@ and compare what each promotion did to git:
 > their first promotion — the rendered branches don't exist yet. Promoting to
 > `dev` creates them.
 
+> **Requires Akuity-hosted Kargo:** `kargo-shared/` uses the
+> `ee.kargo.akuity.io` API group. On a Kargo without it, the `kargo-shared`
+> app reports `no matches for kind CustomPromotionStep` — expected, and nothing
+> else is affected. See [`kargo-shared/`](kargo-shared/).
+
 ## Choosing a pattern
 
 - **Start with `guestbook-rendered`** if you want maximum auditability: every
@@ -153,7 +158,9 @@ automatically (that's the point).
 ## Repo layout
 
 ```
-bootstrap/            # platform-aoa.yaml + the two discovery ApplicationSets
+bootstrap/            # platform-aoa.yaml, the two discovery ApplicationSets,
+                      #   and the kargo-shared Application
+kargo-shared/         # CustomPromotionSteps shared by every Kargo Project
 apps/<name>/          # one self-contained app: argocd/ + kargo/ + manifests
   argocd/             #   AppProject + ApplicationSet (platform-team owned)
   kargo/              #   Project, Warehouse, Stages, PromotionTask, analysis
@@ -162,5 +169,10 @@ docs/                 # onboarding + growth guides
 ```
 
 `.github/CODEOWNERS` shows the intended ownership split: platform team gates
-`bootstrap/` and every app's `argocd/` + `kargo/`; app teams own their
-manifests.
+`bootstrap/`, `kargo-shared/`, and every app's `argocd/` + `kargo/`; app teams
+own their manifests.
+
+Need a promotion to do something no built-in Kargo step covers — run a
+migration, call a policy engine, post a notification? See
+[`kargo-shared/`](kargo-shared/), which ships two runnable examples and a
+commented-out invocation in `guestbook-kustomize`.
