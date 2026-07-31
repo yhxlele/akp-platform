@@ -40,6 +40,14 @@ find . -type f \( -name '*.yaml' -o -name '*.yml' -o -name '*.md' \) -not -path 
   -e "s#github.com/[-_a-zA-Z0-9]+/akp-infra#github.com/${username}/akp-infra#g" \
   {} +
 
+# CODEOWNERS team slug. Anchored on the team name, not the owner, for the same
+# reason as the repo URLs above. Only the org part is rewritten — personal-account
+# forks still have to swap `@owner/platform-team` for a plain `@owner` by hand
+# (see the comment in the file; GitHub ignores owners it can't resolve).
+if [[ -f .github/CODEOWNERS ]]; then
+  sed -E "${SEDI[@]}" "s#@[-_a-zA-Z0-9]+/platform-team#@${username}/platform-team#g" .github/CODEOWNERS
+fi
+
 # Workload cluster: Argo CD destination names in the app ApplicationSets
 find ./apps -type f -name '*.yaml' -exec sed -E "${SEDI[@]}" \
   "s#name: workload-cluster#name: ${workload}#g" {} +
@@ -59,3 +67,6 @@ echo "Done. Review the changes with 'git diff', then commit and push."
 echo "Notes:"
 echo "  - This script is one-shot for the cluster name — reset with 'git checkout -- .' before re-running."
 echo "  - If you also forked akp-monorepo or akp-infra, run their personalize/setup steps too."
+echo "  - .github/CODEOWNERS now says @${username}/platform-team. If ${username} is a"
+echo "    personal account (not an org), replace those owners with plain @${username} —"
+echo "    GitHub ignores code owners it cannot resolve."

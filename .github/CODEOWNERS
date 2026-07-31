@@ -3,7 +3,13 @@
 # (apps/*/base, apps/*/env, apps/*/chart) are deliberately NOT listed —
 # app teams own their deployment config.
 #
-# Replace @example-org/platform-team with your real team slug.
+# `personalize.sh` rewrites the org part of the slug below for you. Two things
+# it cannot decide for you:
+#   - Only *organization* forks can use a `@org/team` owner. If you forked into
+#     a personal account, replace each owner with your plain `@username` —
+#     GitHub silently ignores code owners it cannot resolve, so an unedited
+#     slug here means these paths end up with no required review at all.
+#   - `platform-team` is a placeholder team name; swap in your real one.
 
 /bootstrap/          @example-org/platform-team
 /apps/*/argocd/      @example-org/platform-team
