@@ -7,7 +7,7 @@ environment**. On every promotion, Kargo:
 1. clones the sources at the Freight's commit,
 2. pins the Freight's image tag into the stage overlay,
 3. `kustomize build`s the overlay to plain YAML,
-4. force-pushes the result to the branch `env/guestbook-rendered/<stage>`,
+4. force-pushes the result to the branch `rendered/guestbook-rendered/<stage>`,
 5. syncs the Argo CD Application tracking that branch.
 
 **Pipeline:** `Warehouse → dev → staging (verified) → prod`

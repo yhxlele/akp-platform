@@ -1,6 +1,6 @@
 # The "rendered manifests" (hydrated branch) promotion pattern:
 # main holds the Kustomize sources; every promotion renders the env overlay
-# and force-pushes the plain YAML output to env/guestbook-rendered/<stage>.
+# and force-pushes the plain YAML output to rendered/guestbook-rendered/<stage>.
 # Argo CD Applications track those branches, so what is running in a cluster
 # is always reviewable as plain manifests — no tooling required.
 apiVersion: kargo.akuity.io/v1alpha1
@@ -23,7 +23,7 @@ spec:
       checkout:
       - commit: ${{ commitFrom(vars.repoURL).ID }}
         path: ./src
-      - branch: env/guestbook-rendered/${{ ctx.stage }}
+      - branch: rendered/guestbook-rendered/${{ ctx.stage }}
         path: ./out
         create: true
   # Start from a clean slate so the branch only ever contains freshly

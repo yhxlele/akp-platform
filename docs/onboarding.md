@@ -15,7 +15,7 @@ Pick one name and reuse it everywhere. For an app named `orders`:
 | Kargo Project | `orders` |
 | Argo CD Applications | `orders-<stage>` |
 | Namespaces | `orders-<stage>` |
-| Rendered branches (if used) | `env/orders/<stage>` |
+| Rendered branches (if used) | `rendered/orders/<stage>` (see [environments.md](environments.md)) |
 
 ## Required layout
 

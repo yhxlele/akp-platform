@@ -27,7 +27,7 @@ Four self-contained example apps, one per delivery pattern (each is
 `Warehouse → dev → staging → prod`, watching the public
 `ghcr.io/akuity/guestbook` image so nothing needs to be built):
 
-| | **Promotions commit to `main`** | **Promotions push rendered `env/*` branches** |
+| | **Promotions commit to `main`** | **Promotions push to `rendered/*` branches** |
 |---|---|---|
 | **Kustomize** | [`apps/guestbook-kustomize`](apps/guestbook-kustomize/) — bump overlay tag on main | [`apps/guestbook-rendered`](apps/guestbook-rendered/) — `kustomize build` → hydrated branch |
 | **Helm** | [`apps/guestbook-helm`](apps/guestbook-helm/) — bump values tag on main | [`apps/guestbook-helm-rendered`](apps/guestbook-helm-rendered/) — `helm template` → hydrated branch |
@@ -119,7 +119,7 @@ through `staging` and `prod`. Then do the same in the other three projects
 and compare what each promotion did to git:
 
 - `guestbook-rendered` / `guestbook-helm-rendered` → new commits on
-  `env/<app>/<stage>` branches (plain rendered YAML)
+  `rendered/<app>/<stage>` branches (plain rendered YAML)
 - `guestbook-kustomize` / `guestbook-helm` → new commits on `main`
   (a one-line tag bump)
 
@@ -145,8 +145,17 @@ and compare what each promotion did to git:
 Delete the app directories you don't want — bootstrap prunes them
 automatically (that's the point).
 
+Wondering why two of these push to branches when you've read that
+branch-based environments are an anti-pattern? See
+**[docs/environments.md](docs/environments.md)** — rendered branches are
+storage, not environments, and the distinction matters before you copy the
+pattern into a real repo.
+
 ## Growing beyond the quickstart
 
+- **[Environments and rendered output](docs/environments.md)** — where
+  rendered manifests live and why, the `env/` vs `rendered/` split, and the
+  alternatives (rendering into `main`, a shared branch, a separate repo).
 - **[Onboard a real app / team](docs/onboarding.md)** — the conventions and
   checklist for adding `apps/<your-app>/`.
 - **[Add the app monorepo](docs/add-monorepo.md)** — build your own images
