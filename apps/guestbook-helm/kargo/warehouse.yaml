@@ -8,7 +8,7 @@ spec:
   # Image-only subscription. This variant's promotions COMMIT TO MAIN, so a
   # git subscription to main would make every promotion produce new Freight —
   # an endless loop. (The rendered variants can safely watch git because their
-  # promotions push to env/* branches instead.)
+  # promotions push to rendered/* branches instead.)
   - image:
       repoURL: ghcr.io/akuity/guestbook
       imageSelectionStrategy: SemVer

@@ -1,6 +1,6 @@
 # The "rendered manifests" (hydrated branch) promotion pattern with Helm:
 # main holds the chart and per-env values; every promotion runs helm-template
-# and force-pushes the plain YAML output to env/guestbook-helm-rendered/<stage>.
+# and force-pushes the plain YAML output to rendered/guestbook-helm-rendered/<stage>.
 # Argo CD Applications track those branches and never render the chart
 # themselves — this is the same primitive behind PR-preview environments and
 # templated golden paths.
@@ -24,7 +24,7 @@ spec:
       checkout:
       - commit: ${{ commitFrom(vars.repoURL).ID }}
         path: ./src
-      - branch: env/guestbook-helm-rendered/${{ ctx.stage }}
+      - branch: rendered/guestbook-helm-rendered/${{ ctx.stage }}
         path: ./out
         create: true
   # Start from a clean slate so the branch only ever contains freshly

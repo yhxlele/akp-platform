@@ -8,7 +8,7 @@ promotion Kargo:
 2. runs `helm-template` with `env/<stage>/values.yaml`, pinning the Freight's
    image tag via `setValues`,
 3. force-pushes the rendered YAML to the branch
-   `env/guestbook-helm-rendered/<stage>`,
+   `rendered/guestbook-helm-rendered/<stage>`,
 4. syncs the Argo CD Application tracking that branch.
 
 **Pipeline:** `Warehouse → dev → staging → prod`

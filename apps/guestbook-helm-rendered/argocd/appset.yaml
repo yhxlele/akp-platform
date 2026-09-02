@@ -1,5 +1,5 @@
 # One Argo CD Application per environment directory. Each Application tracks
-# the RENDERED branch env/guestbook-helm-rendered/<stage> — plain YAML that
+# the RENDERED branch rendered/guestbook-helm-rendered/<stage> — plain YAML that
 # Kargo produced with helm-template. The chart is never rendered by Argo CD.
 #
 # NOTE: until the first promotion of a stage, its branch does not exist and the
@@ -28,7 +28,7 @@ spec:
       source:
         repoURL: https://github.com/example-org/akp-platform.git
         # The hydrated branch written by the Kargo promotion task.
-        targetRevision: env/guestbook-helm-rendered/{{path.basename}}
+        targetRevision: rendered/guestbook-helm-rendered/{{path.basename}}
         path: ./
       destination:
         # The Argo CD cluster name of your workload cluster:
