@@ -9,7 +9,7 @@ metadata:
 spec:
   generators:
   - git:
-      repoURL: https://github.com/example-org/akp-platform.git
+      repoURL: https://github.com/yhxlele/akp-platform.git
       revision: HEAD
       directories:
       - path: apps/guestbook-kustomize/env/*
@@ -22,7 +22,7 @@ spec:
     spec:
       project: guestbook-kustomize
       source:
-        repoURL: https://github.com/example-org/akp-platform.git
+        repoURL: https://github.com/yhxlele/akp-platform.git
         targetRevision: HEAD
         path: '{{path}}'
       destination:
