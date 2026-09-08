@@ -32,7 +32,7 @@ spec:
         path: ./
       destination:
         # The Argo CD cluster name of your workload cluster:
-        name: workload-cluster
+        name: demo
         # ...or specify a server address instead:
         # server: https://REPLACEME
         namespace: guestbook-helm-rendered-{{path.basename}}
