@@ -1,3 +1,0 @@
-# Per-environment values for dev, passed to Kargo's helm-template step.
-# image.tag is NOT tracked here — the promotion pins it from the Freight.
-replicaCount: 1

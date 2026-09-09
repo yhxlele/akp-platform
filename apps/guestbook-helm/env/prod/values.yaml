@@ -1,7 +1,0 @@
-# Per-environment values for prod, layered over ../../chart/values.yaml.
-# Kargo's yaml-update step bumps image.tag here on every promotion —
-# this file IS the record of what runs in this environment.
-replicaCount: 2
-
-image:
-  tag: latest
