@@ -1,0 +1,63 @@
+# The "update main" promotion pattern with Kustomize: every promotion is a
+# real commit to main that bumps the image tag in the stage's overlay
+# (env/<stage>/kustomization.yaml). Argo CD syncs the overlay from main, so
+# git history on main doubles as the deployment history.
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: promote
+  namespace: hello
+spec:
+  vars:
+  - name: repoURL
+    value: https://github.com/yhxlele/akp-platform.git
+  - name: image
+    value: ghcr.io/akuity/guestbook
+  steps:
+  - uses: git-clone
+    config:
+      repoURL: ${{ vars.repoURL }}
+      checkout:
+      - branch: main
+        path: ./src
+  # Bump the image tag in the stage overlay's kustomization.yaml.
+  - uses: kustomize-set-image
+    as: update-image
+    config:
+      path: ./src/apps/hello/env/${{ ctx.stage }}
+      images:
+      - image: ${{ vars.image }}
+        tag: ${{ imageFrom(vars.image).Tag }}
+  - uses: git-commit
+    as: commit
+    config:
+      path: ./src
+      message: "hello/${{ ctx.stage }}: promote ${{ imageFrom(vars.image).Tag }}"
+  - uses: git-push
+    config:
+      path: ./src
+      targetBranch: main
+  # Sync the Application so the bump rolls out immediately.
+  - uses: argocd-update
+    config:
+      apps:
+      - name: hello-${{ ctx.stage }}
+  # --- Custom promotion steps (see /kargo-shared) -------------------------
+  # A CustomPromotionStep runs a container of your choosing mid-promotion —
+  # for a migration, a policy check, a notification. Uncomment to run the two
+  # examples on every promotion of this app. `as:` names the step so later
+  # steps can read its outputs. Requires the ee.kargo.akuity.io API group;
+  # see kargo-shared/README.md.
+  #
+  # - uses: hello-world
+  #   as: greet
+  #   config:
+  #     message: "promoted ${{ imageFrom(vars.image).Tag }} to ${{ ctx.stage }}"
+  # - uses: random-number
+  #   as: rng
+  #   config:
+  #     range: 100
+  # - uses: hello-world
+  #   as: report
+  #   config:
+  #     message: "rng said ${{ outputs.rng.result }}"
